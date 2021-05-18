@@ -18,6 +18,7 @@
         	<br />
         	<input type="submit" value="Login">
 			<a href="signup.php">Signup</a>
+			<a href="pswd_request.php">Forgot password</a>
     	</form>
 	</div>
 </body>
