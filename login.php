@@ -1,6 +1,7 @@
 <?php
 	session_start();
 	require_once "./config/setup.php";
+	require "./classes/userview.class.php";
 ?>
 
 <!DOCTYPE html>
@@ -27,27 +28,18 @@
 <?php
 	if($_SERVER['REQUEST_METHOD'] == "POST")
 	{
-		$username = $_POST['login'];
-		$password = $_POST['passwd'];
-		$db = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);	
-		//$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$sql = "SELECT * FROM users WHERE username = :username";
-		$stmt = $db->prepare($sql);
-		$stmt->execute(array('username' => $username));
-		$entry = $stmt->fetch();
-		if (!$entry)
+		$DbUser = new UserView($DB_DSN, $DB_USER, $DB_PASSWORD);
+		$result = $DbUser->get_user($_POST['login'], '');
+		if (!$result)
 			echo "Username does not exist!";
-		else if ($entry['confirm'] == "No")
+		else if ($result['confirm'] == "No")
 			echo "Please confirm acccount!";
-		else if (password_verify($password, $entry['passwd']))
+		else if (password_verify($_POST['passwd'], $result['passwd']))
 		{
-			$_SESSION['username'] = $username;
-			echo "session created";
+			$_SESSION['username'] = $result['username'];
 			header("Location: index.php");
-			//die;
 		}
 		else
 			echo "Incorrect username or password!";
 	}	
-
 ?>

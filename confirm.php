@@ -1,6 +1,8 @@
 <?php
 	session_start();
 	require_once "./config/setup.php";
+	require "./classes/userview.class.php";
+	require "./classes/userctrl.class.php";
 ?>
 	
 <!DOCTYPE html>
@@ -19,17 +21,12 @@
 <?php
 	if (isset($_GET['ckey']))
 	{
-		$ckey = $_GET['ckey'];
-		$confirm = "No";
-		$db = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);	
-		$sql = $db->prepare("SELECT * FROM users WHERE ckey = :ckey AND confirm = :confirm");
-		$sql->execute(array('ckey' => $ckey, 'confirm' => $confirm));
-		$result =$sql->fetch();
+		$DbConfirm = new UserView($DB_DSN, $DB_USER, $DB_PASSWORD);
+		$result = $DbConfirm->get_confirm($_GET['ckey']);
 		if ($result)
 		{
-			$confirm = "Yes";
-			$sql = $db->prepare("UPDATE users SET confirm = :confirm");
-			$sql->execute(array('confirm' => $confirm));
+			$ConfirmUser = new UserCtrl($DB_DSN, $DB_USER, $DB_PASSWORD);
+			$ConfirmUser->confirm_user();
 			header("Location: login.php");
 		}
 		else

@@ -1,8 +1,11 @@
 <?php
 	session_start();
-	require_once "./config/setup.php";
-	require_once "./config/email.php";
-  	require_once "Mail.php";
+	require "./config/setup.php";
+	require "./config/email.php";
+	require "./classes/validator.class.php";
+	require "./classes/userview.class.php";
+	require "./classes/userctrl.class.php";
+	require "./classes/mail.class.php";
 ?>
 
 <!DOCTYPE html>
@@ -33,52 +36,23 @@
 <?php
 	if ($_SERVER['REQUEST_METHOD'] == "POST")
 	{
-		$username = $_POST['login'];
-		$email = $_POST['email'];
-		$passwd = $_POST['passwd'];
-		$passwd2 = $_POST['passwd2'];
-		$db = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);	
-		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$sql = $db->prepare("SELECT * FROM users WHERE username = :username OR email = :email");
-		$sql->execute(array("username" => $username, "email" => $email));
-		$result = $sql->fetch();
-		if ($result['username'] == $username)
-			$errors['user_exists'] = "Username already exists.";
-		if ($result['email'] == $email)
-			$errors['email_exists'] = "Email already exists.";
-		if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/", $passwd))
-			$errors['invalid_passwd'] = "Password does not fulfill requirements.";
-		if ($passwd != $passwd2)
-			$errors['passwd_conflict'] = "Passwords don't match.";
-		if ($errors)
+		$NewUser = new validator($_POST);
+		$DbUser = new UserView($DB_DSN, $DB_USER, $DB_PASSWORD);
+		$result = $DbUser->get_user($NewUser->username, $NewUser->email);
+		$NewUser->validate($result);
+		if ($NewUser->error)
 		{
-			echo json_encode($errors);
+			echo json_encode($NewUser->error);
 			exit;
 		}
-		$encr_passwd = password_hash($passwd, PASSWORD_DEFAULT, ['cost'=>12]);
-		$ckey = md5(time() . $username);
-		$sql = $db->prepare("INSERT INTO users (username, email, passwd, ckey) VALUES (:username, :email, :passwd, :ckey)");
-		$sql->execute(array(
-			"username" => $username,
-			"email" => $email,
-			"passwd" => $encr_passwd,
-			"ckey" => $ckey));
-		$from = $EM_USER;
-		$subject = "Camagru account confirmation";
-		$body = "http://127.0.0.1:8080/camagru/confirm.php?ckey=$ckey";
-
-  		$headers = array ('From' => $from, 'To' => $email,'Subject' => $subject);
-  		$smtp = Mail::factory('smtp',
-    	array ('host' => $EM_HOST,
-      		'port' => $EM_PORT,
-      		'auth' => true,
-      		'username' => $EM_USER,
-      		'password' => $EM_PASSWD));
-		$mail = $smtp->send($email, $headers, $body);
-		if (PEAR::isError($mail))
+		$CreateUser = new UserCtrl($DB_DSN, $DB_USER, $DB_PASSWORD);
+		$CreateUser->create_user($NewUser);
+		$confirm = new SendMail($EM_HOST, $EM_PORT, $EM_USER, $EM_PASSWD);
+		$confirm->confirmation($NewUser);
+		if ($confirm->error == true)
 		{
-    		echo($mail->getMessage());
-		} 
+			exit;
+		}
 		else
 		{
 			header("Location: login.php");

@@ -1,2 +1,3 @@
 cop.sh
 config/database.php
+config/email.php
