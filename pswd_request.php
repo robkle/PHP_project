@@ -2,7 +2,9 @@
 	session_start();
 	require_once "./config/setup.php";
 	require_once "./config/email.php";
-	require_once "Mail.php";
+	require "./classes/userview.class.php";
+	require "./classes/userctrl.class.php";
+	require "./classes/mail.class.php";
 ?>
 
 <!DOCTYPE html>
@@ -29,7 +31,36 @@
 	#if (isset($_POST["Send"])) #alternative to try out
 	if ($_SERVER['REQUEST_METHOD'] == "POST")
 	{
-		$user = $_POST['login'];
+		$DbUser = new UserView($DB_DSN, $DB_USER, $DB_PASSWORD);
+		$result = $DbUser->get_user($_POST['login'], '');
+		if (!$result)
+		{
+			echo "Username does not exist!";
+			exit;
+		}
+		else if ($result['email'] != $_POST['email'])
+		{
+			echo "Email address does not match!";
+			exit;
+		}
+
+		$pwdReset = new UserCtrl($DB_DSN, $DB_USER, $DB_PASSWORD);
+		$pwdReset->clear_pwdreset($_POST['email']);
+		$selector = bin2hex(random_bytes(8));
+		$token = random_bytes(32);
+		$pwdReset->create_pwdreset($_POST['email'], $selector, $token);
+		$sendtoken = new SendMail($EM_HOST, $EM_PORT, $EM_USER, $EM_PASSWD);
+		$sendtoken->pwdreset($_POST, $selector, $token);
+		if ($sendtoken->error == true)
+		{
+			exit;
+		}
+		else
+		{
+			header("Location: login.php");
+		}
+
+		/*$user = $_POST['login'];
 		$user_email = $_POST['email'];
 		$db = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
 		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -54,7 +85,6 @@
 			"pwdResetSelector" => $selector, 
 			"pwdResetToken" => $hashedToken, 
 			"pwdResetExpires" =>$expires));
-		echo "so far so good";	
 
 		$from = $EM_USER;
 		$subject = "Camagru password reset";
@@ -75,7 +105,7 @@
 		else
 		{
 			header("Location: index.php");
-		}
+		}*/
 	}
 ?>
 

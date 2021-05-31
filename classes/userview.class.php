@@ -15,4 +15,11 @@ class UserView extends Users
 		$result = $this->select_confirm($ckey, $confirm);
 		return $result;
 	}
+
+	public function get_token($selector)
+	{
+		$currentdate = date("U");
+		$result = $this->select_token($selector, $currentdate);
+		return $result;
+	}
 }

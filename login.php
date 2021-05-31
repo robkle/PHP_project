@@ -31,15 +31,24 @@
 		$DbUser = new UserView($DB_DSN, $DB_USER, $DB_PASSWORD);
 		$result = $DbUser->get_user($_POST['login'], '');
 		if (!$result)
+		{
 			echo "Username does not exist!";
+			exit;
+		}
 		else if ($result['confirm'] == "No")
+		{
 			echo "Please confirm acccount!";
+			exit;
+		}
 		else if (password_verify($_POST['passwd'], $result['passwd']))
 		{
 			$_SESSION['username'] = $result['username'];
 			header("Location: index.php");
 		}
 		else
+		{
 			echo "Incorrect username or password!";
+			exit;
+		}
 	}	
 ?>

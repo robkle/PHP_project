@@ -17,5 +17,7 @@
 	<a href="logout.php">Logout</a>
 	<br>
 	Hello <?php echo $username; ?>
+	<br>
+	<a href="modify.php">Modify profile</a>
 </body>
 </html>

@@ -28,6 +28,14 @@ class SendMail
 
 	}
 
+	public function pwdreset($user, $selector, $token)
+	{
+		$subject = "Camagru password reset";
+		$body = "http://127.0.0.1:8080/camagru/pswd_reset.php?selector=" . $selector . "&validator=" . bin2hex($token);
+		$headers = array ('From' => $this->user, 'To' => $user['email'], 'Subject' => $subject);
+		$this->send($user['email'], $body, $headers);
+	}
+
 	protected function send($user_email, $body, $headers)
 	{
 		$smtp = Mail::factory('smtp', array(
