@@ -16,32 +16,29 @@
 	}
 	else
 	{
-		header("Location: login.php");
+		header("Location: index.php");
 	}
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Signup</title>
+	<title>Modify</title>
+	<link rel="stylesheet" href="./css/user_input.css">
 </head>
 <body>
-	<h2>Modify profile</h2>
-	<h3>Fill the fields you want to change</h3>
-	<div>
+	<div class="userform">
+		<h2>Camagru</h2>
+		<h3>Modify profile</h3>
+		<p>Fill the fields you want to change</p>
 		<form method="post">
-			New username: <input type="text" name="login">
-			<br />
-			New mail: <input type="text" name="email">
-			<br />
-			New password: <input type="password" name="passwd">
-        	<br />
-        	Re-enter new  password: <input type="password" name="passwd2">
-        	<br />
-        	<input type="submit" value="Modify">
-			<br />
-			<a href="index.php">Cancel</a>
+			<input type="text" name="login" placeholder="New username">
+			<input type="text" name="email" placeholder="New email">
+			<input type="password" name="passwd" placeholder="New password">
+        	<input type="password" name="passwd2" placeholder="Re-enter new password">
+        	<button type="submit">Confirm changes</button>
 		</form>
+			<a href="index.php">Cancel</a>
 	</div>
 </body>
 </html>

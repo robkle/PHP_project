@@ -5,7 +5,7 @@
 	if(isset($_SESSION['username']))
 		$username = $_SESSION['username'];
 	else
-		header("Location: login.php");
+		$username = null;
 ?>
 
 <!DOCTYPE html>
@@ -14,10 +14,6 @@
 	<title>Camagru</title>
 </head>
 <body>
-	<a href="logout.php">Logout</a>
-	<br>
-	Hello <?php echo $username; ?>
-	<br>
-	<a href="modify.php">Modify profile</a>
+	<?php include 'header.php'; ?>
 </body>
 </html>

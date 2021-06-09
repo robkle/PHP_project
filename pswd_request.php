@@ -11,18 +11,18 @@
 <html>
 <head>
 	<title>password_reset</title>
+	<link rel="stylesheet" href="./css/user_input.css">
 </head>
 <body>
-	<h2>Password reset request</h2>
-	<div>
+	<div class="userform">
+	<h2>Camagru</h2>
+	<h3>Password reset request</h3>
 		<form method="post">
-			Username: <input type="text" name="login">
-			<br />
-			Email: <input type="text" name="email">
-        	<br />
-        	<input type="submit" value="Send">
-			<a href="login.php">Login</a>
+			<input type="text" name="login" placeholder="Username">
+			<input type="text" name="email" placeholder="Email">
+        	<button type="submit">Send</button>
     	</form>
+		<a href="login.php">Login</a>
 	</div>
 </body>
 </html>

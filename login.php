@@ -8,19 +8,19 @@
 <html>
 <head>
 	<title>Login</title>
+	<link rel="stylesheet" href="./css/user_input.css">
 </head>
 <body>
-	<h2>Login</h2>
-	<div>
+	<div class="userform">
+		<h2>Camagru<h2>
+		<h3>Login</h3>
 		<form method="post">
-			Username: <input type="text" name="login">
-			<br />
-			Password: <input type="password" name="passwd">
-        	<br />
-        	<input type="submit" value="Login">
-			<a href="signup.php">Signup</a>
-			<a href="pswd_request.php">Forgot password</a>
+			<input type="text" name="login" placeholder="Username">
+			<input type="password" name="passwd" placeholder="Password">
+        	<button type="submit">Login</button>
     	</form>
+		<a href="pswd_request.php">Forgot password?</a>
+		<a href="signup.php">Signup</a>
 	</div>
 </body>
 </html>
