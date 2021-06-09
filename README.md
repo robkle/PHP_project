@@ -1,12 +1,11 @@
 # PHP project
-Work in progress...<br />
+Work in progress...  
 ### Current features:
-* User signup with email confirmation<br />
-* Login<br />
-* Reset forgotten password<br />
-* User data modification functionality<br /> 
+* User signup with email confirmation  
+* Login  
+* Reset forgotten password  
+* User data modification functionality   
 ### Coming soon:
-* CSS styling<br /> 
-* Improve MVC structure<br />
+* Upload and display images features   
 ### Eventually:
 A basic photo sharing web application
