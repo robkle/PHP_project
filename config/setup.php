@@ -66,3 +66,36 @@ $sql = "CREATE TABLE IF NOT EXISTS $table(
 		pwdResetExpires TEXT NOT NULL
 		)";
 $newTable->create($sql);
+
+
+$table = "images";
+$sql = "CREATE TABLE IF NOT EXISTS $table(
+		img_id INT(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+		img_owner INT(6) NOT NULL,
+		img_file VARCHAR(255) NOT NULL,
+		img_desc VARCHAR(255) NOT NULL,
+		img_date DATETIME NOT NULL
+		)";
+$newTable->create($sql);
+
+
+$table = "gallery";
+$sql = "CREATE TABLE IF NOT EXISTS $table(
+		gallery_id INT(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+		gallery_owner INT(6) NOT NULL,
+		image INT(11) NOT NULL,
+		sticker VARCHAR(32),
+		likes INT(6) DEFAULT 0,
+		gallery_date DATE NOT NULL
+		)";
+$newTable->create($sql);
+
+
+$table = "comments";
+$sql = "CREATE TABLE IF NOT EXISTS $table(
+		comment_id INT(6) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+		commenter INT(6) NOT NULL,
+		comment_text VARCHAR(256) NOT NULL,
+		comment_date DATE NOT NULL
+		)";
+$newTable->create($sql);

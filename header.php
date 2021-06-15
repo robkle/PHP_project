@@ -1,8 +1,9 @@
-<?
+<?php
 	if (isset($_SESSION['username']))
 		$username = $_SESSION['username'];
 	else
 		$username = NULL
+?>
 
 <!DOCTYPE html>
 <html>
@@ -23,6 +24,7 @@
 							<li><a href="logout.php">Logout</a></li>
 						</ul>
 					</li>
+					<li><a href="upload.php">+</a></li>
 				</ul>
 			<?php
 		}

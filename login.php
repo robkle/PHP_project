@@ -43,6 +43,7 @@
 		else if (password_verify($_POST['passwd'], $result['passwd']))
 		{
 			$_SESSION['username'] = $result['username'];
+			$_SESSION['user_id'] = $result['id_user'];
 			header("Location: index.php");
 		}
 		else
