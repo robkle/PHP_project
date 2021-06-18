@@ -4,8 +4,10 @@ Work in progress...
 * User signup with email confirmation  
 * Login  
 * Reset forgotten password  
-* User data modification functionality   
+* User data modification functionality
+* Upload images   
 ### Coming soon:
-* Upload and display images features   
+* Image gallery
+* Image edit features   
 ### Eventually:
 A basic photo sharing web application
